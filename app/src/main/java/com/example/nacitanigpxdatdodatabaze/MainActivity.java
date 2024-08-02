@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -120,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void parseAndInsertGpx(InputStream inputStream) throws XmlPullParserException, IOException {
         Log.d("myLog", "ParseAndInsertGpx");
+        Log.d("myLog",  Environment.getExternalStorageDirectory().getPath());
         SQLiteDatabase db = dbHelper.getWritableDatabase(); // chyba
         Log.d("myLog", "databaze nactena");
         db.execSQL("DELETE FROM " + DatabaseHelper.TABLE_NAME);
-        Log.d("myLog", "table deleted");
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         XmlPullParser parser = factory.newPullParser();
         parser.setInput(inputStream, null);

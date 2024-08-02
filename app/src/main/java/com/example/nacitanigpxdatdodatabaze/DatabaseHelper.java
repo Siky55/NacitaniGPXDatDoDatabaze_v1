@@ -3,7 +3,7 @@ package com.example.nacitanigpxdatdodatabaze;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.os.Environment;
 import java.io.File;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -13,9 +13,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "waypoints";
 
     public DatabaseHelper(Context context) {
-        super(context, "/sdcard/myapp/" + DATABASE_NAME, null, DATABASE_VERSION);
+        // Get the path to the external storage directory
+        super(context, Environment.getExternalStorageDirectory().getPath() + "/myapp/" + DATABASE_NAME, null, DATABASE_VERSION);
 
-        File databaseDir = new File("/sdcard/myapp/");
+        // Ensure the directory exists
+        File databaseDir = new File(Environment.getExternalStorageDirectory().getPath() + "/myapp/");
         if (!databaseDir.exists()) {
             databaseDir.mkdirs();
         }
@@ -39,4 +41,3 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 }
-
