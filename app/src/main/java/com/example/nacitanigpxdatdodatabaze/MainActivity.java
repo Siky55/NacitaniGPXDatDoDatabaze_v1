@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        Button loadButton = findViewById(R.id.button_load);
+        Button loadButton = findViewById(R.id.loadButton);
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,11 +192,12 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        String[] from = {"wp_id", "latitude"};
-        int[] to = {android.R.id.text1, android.R.id.text2};
+        String[] from = {"wp_id", "latitude", "longitude", "ele", "label", "symb"};
+        int[] to = {R.id.text1, R.id.text2, R.id.text3, R.id.text4, R.id.text5, R.id.text6};
 
-        SimpleAdapter adapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_2, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.grid_item, from, to);
         gridView.setAdapter(adapter);
     }
+
 }
 
