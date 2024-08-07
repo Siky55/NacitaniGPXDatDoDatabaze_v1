@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,7 +26,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileInputStream;
+import android.provider.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,11 +41,19 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private GridView gridView;
     private ActivityResultLauncher<Intent> pickFileLauncher;
+    private static final int PERMISSION_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, PERMISSION_REQUEST_CODE);
+            }
+        }
 
         dbHelper = new DatabaseHelper(this);
         gridView = findViewById(R.id.gridView);
@@ -149,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 if (lat != null && lon != null) {
                     insertWaypoint(db, lat, lon, ele, label);
                 }
-                lat = lon = ele = label = null; // Reset values for the next waypoint
+                lat = lon = ele = label = null;
             }
             eventType = parser.next();
         }
